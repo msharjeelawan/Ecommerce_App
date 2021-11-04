@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 // 			}
 class Product {
 
+
   String _title;
   String _discription;
   String _rating;
@@ -101,4 +102,5 @@ class Product {
   List<String> get Images => _images;
 
   //static List<Product> get productList => _productList;
+
 }
