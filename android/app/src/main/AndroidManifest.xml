@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.teqholic.saraa_kuch">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="saraa_kuch"
         android:icon="@mipmap/ic_launcher">
