@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'constants.dart';
 import 'screens/SplashScreen.dart';
 void main() {
   runApp(MyApp());
@@ -11,7 +13,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Saraa Kuch app',
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
+        primarySwatch: kPrimaryColor,
+        appBarTheme: AppBarTheme(
+
+          systemOverlayStyle: SystemUiOverlayStyle.light,
+        ),
       ),
       home:SplashScreen(),
       debugShowCheckedModeBanner:false

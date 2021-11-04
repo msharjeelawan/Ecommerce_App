@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'HomeScreen.dart';
+import 'LoginScreen.dart';
 
 class SplashScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    test(context);
+    splashtoOther(context);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0.0,
@@ -27,11 +28,13 @@ class SplashScreen extends StatelessWidget{
     );
   }
 
-  void test(context){
+  void splashtoOther(context){
     Future.delayed(const Duration(milliseconds: 2000),(){
 
       var route = MaterialPageRoute(builder: (BuildContext context){
-          return HomeScreen();
+          return LoginScreen();
+
+            //HomeScreen();
       });
       Navigator.push(context, route);
     });
