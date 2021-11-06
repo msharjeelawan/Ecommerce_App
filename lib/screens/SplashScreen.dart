@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'HomeScreen.dart';
 import 'LoginScreen.dart';
+import 'OrderHistoryList.dart';
 
 class SplashScreen extends StatelessWidget{
 
@@ -32,7 +33,7 @@ class SplashScreen extends StatelessWidget{
     Future.delayed(const Duration(milliseconds: 2000),(){
 
       var route = MaterialPageRoute(builder: (BuildContext context){
-          return LoginScreen();
+          return OrderHistory();
 
             //HomeScreen();
       });

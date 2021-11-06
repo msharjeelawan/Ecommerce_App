@@ -24,18 +24,11 @@ class LoginSignupScreen {
           "password": password,
         });
 
-    if (response.statusCode == 200) {
-      print("response.statusCode" + response.statusCode.toString());
+
       // If the server did return a 200 OK response,
       // then parse the JSON.
       return LoginResponse.fromJson(jsonDecode(response.body));
-    } else {
-      LoginResponse loginResponse=LoginResponse();
-      return loginResponse;
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load login');
-    }
+
   }
 
   static Future<Customer> RegisterCustomer(String email, String password) async {

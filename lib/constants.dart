@@ -39,6 +39,20 @@ const BHAppTextColorPrimary = Color(0xFF212121);
 const BHAppTextColorSecondary = Color(0xFF5A5C5E);
 const BHAppDividerColor = Color(0xFFDADADA);
 const BHGreyColor = Color(0xFF808080);
+const Color light_grey = Color.fromRGBO(239,239,239, 1);
+
+/*If you are not a developer, do not change the bottom colors*/
+const Color white = Color.fromRGBO(255,255,255, 1);
+const Color dark_grey = Color.fromRGBO(112,112,112, 1);
+const Color medium_grey = Color.fromRGBO(132,132,132, 1);
+const Color grey_153 = Color.fromRGBO(153,153,153, 1);
+const Color font_grey = Color.fromRGBO(73,73,73, 1);
+const Color textfield_grey = Color.fromRGBO(209,209,209, 1);
+const Color golden = Color.fromRGBO(248, 181, 91, 1);
+const Color accent_color = Color.fromRGBO(230,46,4, 1);
+const Color soft_accent_color = Color.fromRGBO(247,189,168, 1);
+const Color splash_screen_color = Color.fromRGBO(230,46,4, 1); // if not sure , use the same color as accent color
+/*configurable colors ends*/
 
 ///
 const MaterialColor kPrimaryColor = const MaterialColor(
@@ -95,7 +109,7 @@ const String firstnameEnter="Please enter first name";
 const String lastnameEnter="Please enter last name";
 const String phoneEnter="Please enter phone number";
 const String addressEnter="Please enter shipping address";
-
+const String resentOtpMessage="we resent otp code please wait for a mint to resend OTP code";
 
 const String conectivityConnection="please check internet connect, try again";
 const String consumerKey="ck_21ea4617b9a14b863492c12025502accbb383d1b";
@@ -118,9 +132,12 @@ const String couponDialog="Please check coupon code";
 const String cartItems="Cart Items";
 const BHTxtForgotPwd = 'Forgot Password';
 const ChangePassword = 'Change Password';
-
+const nouserFound="No user found with this email address";
 const BHForgotPasswordSubTitle = "Please enter your Email so we can help you recover your password";
 const changepasswordsubtitle = "we send you a verification code on email to keep your account secure. please enter that code and new password";
+const otp="please enter valid OTP";
+const validateattempt="The reset code provided is not valid. You have 2 attempts remaining.";
+
 
 const BHBtnSend = 'Send';
 

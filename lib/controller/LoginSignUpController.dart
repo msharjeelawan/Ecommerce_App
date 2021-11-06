@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:saraa_kuch/SharedPref/SharedPrefren.dart';
 import 'package:saraa_kuch/models/Customer.dart';
 import 'package:saraa_kuch/models/EventActionEnum.dart';
 import 'package:saraa_kuch/models/login_response.dart';
 import 'package:saraa_kuch/screens/CompleteProfileScreen.dart';
+import 'package:saraa_kuch/screens/ConfirmPassword.dart';
 import 'package:saraa_kuch/screens/HomeScreen.dart';
+import 'package:saraa_kuch/screens/OtpScreen.dart';
 import 'package:saraa_kuch/services/LoginSignUpService.dart';
+import 'package:saraa_kuch/services/ResetPassword.dart';
 
 import '../constants.dart';
 import '../services/HomeService.dart';
@@ -20,6 +24,12 @@ class LoginSignupBloc {
       new StreamController<List<String>>();
   StreamSink _validateSink;
   Stream validateStream;
+
+  StreamController<String> _secondResponse =
+  new StreamController<String>();
+  StreamSink _secondSink;
+  Stream secondStream;
+  Timer _timer;
   List<String> errors = [];
 
 /*
@@ -34,9 +44,15 @@ class LoginSignupBloc {
     //login  stream & sink
     _progressSink = _loginResponseController.sink;
     progressStream = _loginResponseController.stream;
+// second timer
+    _secondSink = _secondResponse.sink;
+    secondStream = _secondResponse.stream;
+
+
 
     _progressSink.add(false);
     _validateSink.add(errors);
+    _secondSink.add("60");
 
     //this method will get products from api as json
     //  getProductsFromApi();
@@ -65,15 +81,15 @@ class LoginSignupBloc {
 
     final results = await LoginSignupScreen.loginCustomer(email, password);
     // _controller.sink.add(results);
-    if (results.token != null) {
+    if (results.statusCode==200) {
       _progressSink.add(false);
+      await SharedPref.addLoginDetail(results.toJson());
 
       print("objects" + results.toJson().toString());
     } else {
-      print("Empty" + results.toJson().toString());
       _progressSink.add(false);
       errors = [];
-      addError(error: notvalidateEmailorPassword);
+      addError(error: results.message);
     }
   }
 
@@ -84,6 +100,7 @@ class LoginSignupBloc {
     // _controller.sink.add(results);
     if (results.id != null) {
       _progressSink.add(false);
+      await SharedPref.addCustomerDetail(results.toJson());
 
       print("objects" + results.toJson().toString());
       var route = MaterialPageRoute(builder: (BuildContext context) {
@@ -121,7 +138,7 @@ class LoginSignupBloc {
     // _controller.sink.add(results);
     if (results.id != null) {
       _progressSink.add(false);
-
+      await SharedPref.addCustomerDetail(results.toJson());
       print("completeProfile" + results.toJson().toString());
       var route = MaterialPageRoute(builder: (BuildContext context) {
         return HomeScreen();
@@ -144,7 +161,134 @@ class LoginSignupBloc {
       }
     }
   }
+  void resetPasssword(email,context,type) async{
+    _progressSink.add(true);
+    errors = [];
+    _validateSink.add(errors);
+    final results = await ResetPasswordAPi.getResetPassword(email);
+    _progressSink.add(false);
+    if(results!=null)
+      {
+        if(results.data.status==200)
+          {
+              if(type=="send")
+                {
 
+                  var route = MaterialPageRoute(builder: (BuildContext context) {
+                    return OtpScreen(email:email);
+                  });
+                  Navigator.push(context, route);
+
+                }else{
+
+                //this is not errors, it is only message otp has been sent to
+                secondfunction();
+                addError(error:resentOtpMessage);
+
+              }
+
+
+          }else{
+          addError(error: nouserFound);
+
+
+        }
+
+
+      }else{
+      addError(error: conectivityConnection);
+
+
+    }
+
+
+
+
+  }
+  void verifySecurityCode(String securitycode, email, context) async{
+    _progressSink.add(true);
+    errors = [];
+    _validateSink.add(errors);
+    final results = await ResetPasswordAPi.verificationPassword(email,securitycode);
+    _progressSink.add(false);
+    if(results!=null)
+    {
+      if(results.data.status==200)
+      {
+
+          var route = MaterialPageRoute(builder: (BuildContext context) {
+            return ConfirmPassword(email:email,securityCode: securitycode);
+          });
+          Navigator.push(context, route);
+
+          //this is not errors, it is only message otp has been sent to
+
+
+
+
+      }else{
+        addError(error: results.message);
+
+
+      }
+
+
+    }else{
+      addError(error: conectivityConnection);
+
+
+    }
+
+
+
+
+  }
+
+  void changePassword(email,securitycode,password,context) async{
+    print("emai"+email+"\n password"+password+"\n securityCode"+securitycode);
+
+    _progressSink.add(true);
+    errors = [];
+    _validateSink.add(errors);
+    final results = await ResetPasswordAPi.savePassword(email,password,securitycode);
+    _progressSink.add(false);
+    if(results!=null)
+    {
+      print("change password response"+results.toJson().toString());
+      if(results.data.status==200)
+      {
+
+     /*   var route = MaterialPageRoute(builder: (BuildContext context) {
+          return ConfirmPassword(email:email);
+        });
+        Navigator.push(context, route);*/
+
+        //this is not errors, it is only message otp has been sent to
+
+
+        addError(error: results.message);
+
+
+      }else{
+        addError(error: results.message);
+
+
+      }
+
+
+    }else{
+      addError(error: conectivityConnection);
+
+
+    }
+
+
+
+
+  }
+
+
+// Validations
   String validateErrors(email, password) {
     errors = [];
     _validateSink.add(errors);
@@ -226,6 +370,73 @@ print("id id id "+id.toString());
     completeProfile(firstName, lastname, phone, address,id,context);
   }
 
+
+
+  String validateEmailErrors(email,context) {
+    errors = [];
+    _validateSink.add(errors);
+
+    if (email.isEmpty) {
+      addError(error: kEmailNullError);
+      return "";
+    } else if (!emailValidatorRegExp.hasMatch(email)) {
+      addError(error: kInvalidEmailError);
+      return "";
+    }
+
+    resetPasssword(email,context,"send");
+  }
+
+  String validateOtpErrors(otp1,otp2,otp3,otp4,email,context)
+  {
+
+    errors = [];
+    _validateSink.add(errors);
+
+    if (otp1.isEmpty || otp2.isEmpty
+    || otp3.isEmpty || otp4.isEmpty) {
+      addError(error: otp);
+      return "";
+    } else if (otp1.length > 1) {
+      addError(error: kInvalidEmailError);
+      return "";
+    }
+    String securitycode=otp1+otp2+otp3+otp4;
+
+   verifySecurityCode(securitycode,email,context);
+
+
+  }
+  String validateChangePasswordErrors(email,securitycode,password,password2,context)
+  {
+    errors = [];
+    _validateSink.add(errors);
+    if (password.isEmpty) {
+      addError(error: kPassNullError);
+      return "";
+    } else if (password.length < 6) {
+      addError(error: kShortPassError);
+      return "";
+    }
+    if (password2.isEmpty) {
+      addError(error: kPassNullError2);
+      return "";
+    } else if (password.length < 6) {
+      addError(error: kShortPassError2);
+      return "";
+    }
+    if (password != password2) {
+      addError(error: kMatchPassError);
+      return "";
+    }
+    print("securityCode:...."+securitycode);
+
+    changePassword(email,securitycode,password,context);
+
+
+  }
+
+
   void addError({String error}) {
     if (!errors.contains(error)) {
       errors.add(error);
@@ -239,4 +450,36 @@ print("id id id "+id.toString());
       _validateSink.add(errors);
     }
   }
+
+
+// second functions
+void secondfunction()
+{
+  int _start = 60;
+  _secondSink.add(_start.toString());
+  const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+
+            if (_start < 1) {
+              _secondSink.add(_start.toString());
+              errors = [];
+              _validateSink.add(errors);
+              timer.cancel();
+            } else {
+              _secondSink.add(_start.toString());
+              _start = _start - 1;
+            }
+
+      }
+    );
+
 }
+  void closeStream() {
+    _loginResponseController.close();
+    _validationResponse.close();
+    _secondResponse.close();
+  }
+}
+

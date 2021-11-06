@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:saraa_kuch/SharedPref/SharedPrefren.dart';
 import 'package:saraa_kuch/controller/LoginSignUpController.dart';
 import 'package:saraa_kuch/helper/helper.dart';
 import 'package:saraa_kuch/screens/CompleteProfileScreen.dart';
@@ -153,7 +154,17 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Expanded(child: SizedBox()),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              final route = MaterialPageRoute(
+                                  builder: (BuildContext context){
+                                    return ForgotPasswordScreen();
+                                  }
+                              );
+                              Navigator.push(context, route);
+
+
+
+                            },
                             child: Text(
                               "Forgot Password",
                               style: TextStyle(
@@ -200,7 +211,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                            icon: Icon(Icons.facebook), onPressed: () {}),
+                            icon: Icon(Icons.facebook), onPressed: () {
+                              print("Login Response"+SharedPref.getLoginDetail().toString());
+
+
+                        }),
                         IconButton(
                             icon: Icon(Icons.facebook), onPressed: () {}),
                         IconButton(
