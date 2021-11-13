@@ -33,7 +33,7 @@ class SplashScreen extends StatelessWidget{
     Future.delayed(const Duration(milliseconds: 2000),(){
 
       var route = MaterialPageRoute(builder: (BuildContext context){
-          return OrderHistory();
+          return LoginScreen();
 
             //HomeScreen();
       });

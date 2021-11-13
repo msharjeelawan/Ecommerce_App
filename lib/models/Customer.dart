@@ -45,8 +45,8 @@ class Customer {
     lastName: json["last_name"],
     role: json["role"],
     username: json["username"],
-    billing: Ing.fromJson(json["billing"]),
-    shipping: Ing.fromJson(json["shipping"]),
+    billing: json["billing"]!=null?Ing.fromJson(json["billing"]):Ing(),
+    shipping:json["shipping"]!=null? Ing.fromJson(json["shipping"]):Ing(),
     isPayingCustomer: json["is_paying_customer"],
     avatarUrl: json["avatar_url"],
 
@@ -66,6 +66,9 @@ class Customer {
     "avatar_url": avatarUrl,
 
   };
+  static List<Customer> fromJsonList(jsonList) {
+    return jsonList.map<Customer>((obj) => Customer.fromJson(obj)).toList();
+  }
 }
 
 class Ing {

@@ -1,4 +1,4 @@
-package com.teqholic.saraa_kuch;
+package com.teqholic.saraakuch;
 
 import io.flutter.embedding.android.FlutterActivity;
 
