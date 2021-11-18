@@ -29,8 +29,10 @@ class FormError extends StatelessWidget {
         SizedBox(
           width: 10,
         ),
-        Text(error,
-            style: TextStyle(color: gold)),
+        Flexible(
+          child: Text(error,
+              style: TextStyle(color: gold)),
+        ),
       ],
     );
   }

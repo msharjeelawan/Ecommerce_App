@@ -10,31 +10,72 @@ String loginResponseToJson(LoginResponse data) => json.encode(data.toJson());
 
 class LoginResponse {
   LoginResponse({
+    this.success,
+    this.statusCode,
+    this.code,
+    this.message,
+    this.data,
+  });
+
+  bool success;
+  int statusCode;
+  String code;
+  String message;
+  Data data;
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
+    success: json["success"],
+    statusCode: json["statusCode"],
+    code: json["code"],
+    message: json["message"],
+    data: json["data"].isEmpty?Data():Data.fromJson(json["data"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "success": success,
+    "statusCode": statusCode,
+    "code": code,
+    "message": message,
+    "data": data.toJson(),
+  };
+}
+
+class Data {
+  Data({
     this.token,
-    this.userEmail,
-    this.userNicename,
-    this.userDisplayName,
+    this.id,
+    this.email,
+    this.nicename,
+    this.firstName,
+    this.lastName,
+    this.displayName,
   });
 
   String token;
-  String userEmail;
-  String userNicename;
-  String userDisplayName;
+  int id;
+  String email;
+  String nicename;
+  String firstName;
+  String lastName;
+  String displayName;
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
     token: json["token"],
-    userEmail: json["user_email"],
-    userNicename: json["user_nicename"],
-    userDisplayName: json["user_display_name"],
+    id: json["id"],
+    email: json["email"],
+    nicename: json["nicename"],
+    firstName: json["firstName"],
+    lastName: json["lastName"],
+    displayName: json["displayName"],
   );
 
   Map<String, dynamic> toJson() => {
     "token": token,
-    "user_email": userEmail,
-    "user_nicename": userNicename,
-    "user_display_name": userDisplayName,
+    "id": id,
+    "email": email,
+    "nicename": nicename,
+    "firstName": firstName,
+    "lastName": lastName,
+    "displayName": displayName,
   };
-  static List<LoginResponse> fromJsonList(jsonList) {
-    return jsonList.map<LoginResponse>((obj) => LoginResponse.fromJson(obj)).toList();
-  }
 }

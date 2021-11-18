@@ -26,6 +26,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   String lastName = "";
   String phoneNumber = "";
   String address = "";
+  String postalCode="completeprofile";
   List<String> errors = [];
 
   @override
@@ -205,7 +206,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                             // if all are valid then go to success screen
                             KeyboardUtil.hideKeyboard(context);
                             loginSignupbloc.validateProfileErrors(
-                                firstName, lastName, phoneNumber,address,widget.id.toString(),context);
+                                firstName, lastName, phoneNumber,address,widget.id.toString(),postalCode,context);
                           }
                         },
                         child: Text("Continue"),

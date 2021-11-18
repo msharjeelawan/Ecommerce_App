@@ -24,20 +24,34 @@ class LoginSignupScreen {
           "password": password,
         });
 
-    if (response.statusCode == 200) {
-      print("response.statusCode" + response.statusCode.toString());
+
       // If the server did return a 200 OK response,
       // then parse the JSON.
       return LoginResponse.fromJson(jsonDecode(response.body));
-    } else {
-      LoginResponse loginResponse=LoginResponse();
-      return loginResponse;
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load login');
-    }
-  }
 
+  }
+// Social Media Login
+  static Future<LoginResponse> SocialMediaustomer(String email) async {
+    print("email+password " + email.toString() + password.toString());
+    bool flag = false;
+    Map<String, String> requestheader = {
+      'Content-type': 'application/x-www-form-urlencoded'
+    };
+
+    var response = await client.post(
+        Uri.parse(weburl + "/wp-json/jwt-auth/v1/token"),
+        headers: requestheader,
+        body: {
+          "username": email,
+          "social_login": "true",
+        });
+
+
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return LoginResponse.fromJson(jsonDecode(response.body));
+
+  }
   static Future<Customer> RegisterCustomer(String email, String password) async {
     print("email+password " + email.toString() + password.toString());
     Map<String, String> requestheader = {
@@ -127,7 +141,34 @@ class LoginSignupScreen {
 
   }
 
+  static Future<Customer> GetCustomerResponse(String email) async {
+    print("email+password " + email.toString() + password.toString());
+    Map<String, String> requestheader = {
+      'Content-type': 'application/x-www-form-urlencoded',
+    };
 
+    var response = await client.get(
+        Uri.parse(weburl +
+            "/wp-json/wc/v3/customers?email=$email&consumer_key=$consumerKey&consumer_secret=$secreteKey"),
+        headers: requestheader);
+    List<Customer> customerlist = Customer.fromJsonList(json.decode(response.body));
+
+    if (customerlist!= null && customerlist.isNotEmpty) {
+      print("Get Customer Response" + response.body.toString());
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+
+      return customerlist[0];
+    } else {
+      print("Not Get Customer Response"+response.statusCode.toString() +"Response"+ response.body.toString());
+      // only here we will assume firstName=response.statusCode
+      Customer loginResponse=Customer(firstName: response.body.toString());
+      return loginResponse;
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load login');
+    }
+  }
 
 }
 

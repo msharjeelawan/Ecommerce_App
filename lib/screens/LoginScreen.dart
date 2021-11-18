@@ -1,10 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:saraa_kuch/SharedPref/SharedPrefren.dart';
 import 'package:saraa_kuch/controller/LoginSignUpController.dart';
 import 'package:saraa_kuch/helper/helper.dart';
+import 'package:saraa_kuch/models/Customer.dart';
+import 'package:saraa_kuch/models/login_response.dart';
 import 'package:saraa_kuch/screens/CompleteProfileScreen.dart';
 import 'package:saraa_kuch/screens/ForgotPasswordScreen.dart';
 import 'package:saraa_kuch/screens/ProfileScreen.dart';
+
 import 'package:saraa_kuch/services/LoginSignUpService.dart';
 import 'package:saraa_kuch/widgets/FormError.dart';
 
@@ -24,7 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String email = "";
   String password = "";
   List<String> errors = [];
-
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ? FormError(errors: snapshot.data)
                               : Container();
                         }),
-
                     StreamBuilder(
                         stream: loginSignupbloc.progressStream,
                         initialData: false,
@@ -153,7 +157,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Expanded(child: SizedBox()),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              final route = MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return ForgotPasswordScreen();
+                              });
+                              Navigator.push(context, route);
+                            },
                             child: Text(
                               "Forgot Password",
                               style: TextStyle(
@@ -171,8 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             _formKey.currentState.save();
                             // if all are valid then go to success screen
                             KeyboardUtil.hideKeyboard(context);
-                            loginSignupbloc.validateErrors(email,password);
-
+                            loginSignupbloc.validateErrors(email, password);
                           }
                           /*     loginSignupbloc.loginCustomer(
                               "ks@gmail.com", "123456789");*/
@@ -197,16 +206,43 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.02,
                     ),
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        IconButton(
-                            icon: Icon(Icons.facebook), onPressed: () {}),
-                        IconButton(
-                            icon: Icon(Icons.facebook), onPressed: () {}),
-                        IconButton(
-                            icon: Icon(Icons.facebook), onPressed: () {}),
+                        Container(
+                          decoration: boxDecorationRoundedWithShadow(16),
+                          padding: EdgeInsets.all(16),
+                          child: GestureDetector(
+                              child: Image.asset(
+                                  'assets/images/wa_facebook.png',
+                                  width: 40,
+                                  height: 40),
+                          onTap: (){
+                            loginSignupbloc.facebookLogin(context);
+
+                          },
+                          ),
+
+                        ),
+                        SizedBox(
+                          width: width * 0.1,
+                        ),
+                        Container(
+                          decoration: boxDecorationRoundedWithShadow(16),
+                          padding: EdgeInsets.all(16),
+                          child: GestureDetector(
+                            child: Image.asset(
+                                'assets/images/wa_google_logo.png',
+                                width: 40,
+                                height: 40),
+                            onTap: () {
+                              loginSignupbloc.googleLogin();
+                            },
+                          ),
+                        ),
                       ],
                     ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -217,14 +253,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(color: gold),
                             ),
                             onPressed: () {
+                          //    googleSignIn();
 
-                              final  route = MaterialPageRoute(
+                                final  route = MaterialPageRoute(
                                   builder: (BuildContext context){
                                     return RegisterScreen();
                                   }
                               );
                               Navigator.push(context, route);
-
                             })
                       ],
                     ),
@@ -237,4 +273,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+
 }
