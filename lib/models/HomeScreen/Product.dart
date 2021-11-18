@@ -28,7 +28,7 @@ class Product {
 
   List<String> _images = [];
 
-  //static List<Product> _productList;
+  //List<Product> _productList = [];
 
   Product({String title, int price, int discountPrice, List<String> images, int stock, String rating, String ratingCount, String discription}){
     _title = title;
