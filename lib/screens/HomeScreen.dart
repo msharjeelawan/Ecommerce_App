@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:saraa_kuch/controller/HomeController.dart';
+import 'package:saraa_kuch/models/Product.dart';
 import 'package:saraa_kuch/screens/ProductScreen.dart';
 import 'package:saraa_kuch/widgets/SliderScreen/DotIndicator.dart';
 import '../services/HomeService.dart';
+import 'package:saraa_kuch/models/Banner.dart' as banner;
 
 class HomeScreen extends StatefulWidget{
 
@@ -137,15 +140,16 @@ class _HomeScreenState extends State<HomeScreen>{
                         builder: (context,snapshot){
                           if(snapshot.connectionState == ConnectionState.active){
                             if(snapshot.hasData){
+                            List<banner.Banner> result = snapshot.data ;
                               return  Stack(
                                 children: [
                                   PageView.builder(
-                                      itemCount: 5,
+                                      itemCount: result.length,
                                       controller: _pageController,
                                       itemBuilder: (context,index){
                                         return Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 15),
-                                            child:  Image.asset("assets/images/sale_banner.png",fit: BoxFit.fill,)
+                                            child:  Image.network(result[index].url,fit: BoxFit.fill,)
                                         );
                                       }),
                                   Positioned(
@@ -154,9 +158,9 @@ class _HomeScreenState extends State<HomeScreen>{
                                       child: Center(
                                           child: Container(
 
-                                            width: size.width*0.07+size.width*0.05*4,
+                                            width: size.width*0.07+size.width*0.05*result.length,
                                             height: 8,
-                                            child:DotIndicator(size: 5, activeIndex: banerIndex),
+                                            child:DotIndicator(size: result.length, activeIndex: banerIndex),
                                           )
                                       )
                                   ),
@@ -235,6 +239,7 @@ class _HomeScreenState extends State<HomeScreen>{
                           if(snapshot.connectionState == ConnectionState.active){
                             //show widget after server response
                             if(snapshot.hasData){
+                           //   List<Banner> result = snapshot.data;
                               return ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: 6,
@@ -257,7 +262,7 @@ class _HomeScreenState extends State<HomeScreen>{
                                                   image: DecorationImage(
                                                       fit: BoxFit.fill,
                                                       colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.dstATop),
-                                                      image: Image.asset("assets/images/mobile.jpg",
+                                                      image: Image.network("https://saraakuch.pk/wp-content/uploads/2021/06/shampoo-6-min.png",
                                                         fit: BoxFit.fill,
                                                         width: MediaQuery.of(context).size.width * 0.65,
                                                         height: 100,).image
@@ -317,26 +322,26 @@ class _HomeScreenState extends State<HomeScreen>{
                           if(snapshot.data == null){
                             return Text("No Data");
                           }else {
-                            print("test");
-                            List<String> names = snapshot.data;
-                            print("size"+names.length.toString());
+                            List<Product> list = snapshot.data;
+
                             return ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: names.length + 1,
+                                itemCount: list.length + 1,
                                 itemBuilder: (context, index) {
                                   if (index == 0) {
                                     return SizedBox(width: 15,);
                                   } else {
                                     return
-                                      Padding(
+                                      Container(
                                         padding: const EdgeInsets.fromLTRB(0, 5, 10, 0),
                                         child: GestureDetector(
                                           child: Column(
                                             children: [
                                               Container(
                                                 width: 130,
-                                                height: 100,
+                                                height: 90,
                                                 decoration: BoxDecoration(
+                                                    color: Colors.white,
                                                     boxShadow: <BoxShadow>[
                                                       BoxShadow(
                                                           color: Colors.black12,
@@ -347,12 +352,21 @@ class _HomeScreenState extends State<HomeScreen>{
                                                     borderRadius: BorderRadius.circular(20),
                                                     image: DecorationImage(
                                                         fit: BoxFit.fill,
-                                                        image: Image.asset("assets/images/shirt.jpg",).image
+                                                        image: Image.network(list[index-1].Images[0],).image
                                                     )
                                                 ),
                                               ),
-                                              SizedBox(height: 2,),
-                                              Text(names[index - 1],style:TextStyle(fontWeight: FontWeight.bold))
+                                              SizedBox(height: 4,),
+                                              Expanded(
+                                                child: Container(
+                                                  // height: 50,
+                                                   width: 125,
+                                                  // color: Colors.red,
+                                                 // padding: const EdgeInsets.only(left: 20.0,right: 15),
+                                                  child: Center(child: Text(list[index - 1].title,style:TextStyle(fontWeight: FontWeight.bold,fontSize: 12))),
+                                                ),
+                                              )
+
                                             ],
                                           ),
                                         ),
@@ -372,7 +386,7 @@ class _HomeScreenState extends State<HomeScreen>{
                       SizedBox(width: 20,),
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: Text("Popular Product",style: TextStyle(fontSize: 20.0,color: MyColors.gold),),
+                        child: Text("All Products",style: TextStyle(fontSize: 20.0,color: MyColors.gold),),
                       ),
                       Expanded(child: SizedBox(),),
                       Align(
@@ -388,23 +402,27 @@ class _HomeScreenState extends State<HomeScreen>{
                         builder: (BuildContext context,AsyncSnapshot<dynamic> snapshot){
                           if(snapshot.connectionState == ConnectionState.active){
                             if(snapshot.hasData){
+                              List<Product> result = snapshot.data;
+                              print("size of array${result.length}");
                               //show data
                               return GridView.builder(
                                 padding: EdgeInsets.symmetric(horizontal: 10),
                                 physics:NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: 100,
-                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,childAspectRatio: 1.05),
+                                itemCount: result.length,
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,childAspectRatio: 0.88),
                                 itemBuilder: (context,index){
                                   return Padding(
                                     padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                                     child: GestureDetector(
                                       child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Container(
                                             width: size.width*0.4,
-                                            height: size.height*0.18,
+                                            height: size.height*0.22,
                                             decoration: BoxDecoration(
+                                              color: Colors.white,
                                                 boxShadow: <BoxShadow>[
                                                   BoxShadow(
                                                       color: Colors.black12,
@@ -415,12 +433,17 @@ class _HomeScreenState extends State<HomeScreen>{
                                                 borderRadius: BorderRadius.circular(20),
                                                 image: DecorationImage(
                                                     fit: BoxFit.fill,
-                                                    image: Image.asset("assets/images/shirt.jpg",).image
+                                                    image: Image.network(result[index].Images[0]).image
                                                 )
                                             ),
                                           ),
-                                          SizedBox(height: 2,),
-                                          Text("test",style:TextStyle(fontWeight: FontWeight.bold))
+                                          SizedBox(height: 5,),
+                                          Container(
+                                            height: 30,
+                                           // color: Colors.red,
+                                            padding: const EdgeInsets.only(left: 20.0,right: 15),
+                                            child: Center(child: Text(result[index].title,style:TextStyle(fontWeight: FontWeight.bold))),
+                                          )
                                         ],
                                       ),
                                     ),
