@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:saraa_kuch/SharedPref/SharedPrefren.dart';
+import 'package:saraa_kuch/screens/HomeScreen.dart';
 import 'package:saraa_kuch/widgets/SliderScreen/DotIndicator.dart';
 
 class SliderScreen extends StatefulWidget{
@@ -50,7 +52,7 @@ class _SliderScreenState extends State<SliderScreen>{
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
-                      Text("SaraaKuch",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.deepOrange),),
+                      Text("SaraaKuch",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: MyColors.gold),),
                       SizedBox(height: 10,),
                       Text("Welcome to SaraaKuch, Let’s shop!"),
                       SizedBox(height: 20,),
@@ -61,7 +63,7 @@ class _SliderScreenState extends State<SliderScreen>{
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
-                      Text("SaraaKuch",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.deepOrange),),
+                      Text("SaraaKuch",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: MyColors.gold),),
                       SizedBox(height: 10,),
                       Text("We help people conect with store around Pakistan"),
                       SizedBox(height: 20,),
@@ -72,7 +74,7 @@ class _SliderScreenState extends State<SliderScreen>{
                   padding: EdgeInsets.symmetric(horizontal: 30),
                   child: Column(
                     children: [
-                      Text("SaraaKuch",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: Colors.deepOrange),),
+                      Text("SaraaKuch",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color: MyColors.gold),),
                       SizedBox(height: 10,),
                       Text("We show the easy way to shop. Just stay at home with us"),
                       SizedBox(height: 20,),
@@ -89,7 +91,7 @@ class _SliderScreenState extends State<SliderScreen>{
               Container(
                   width:MediaQuery.of(context).size.width*0.2,
                   height: 10,
-                  child: Center(child: DotIndicator(size: 3, activeIndex: activeIndex))),
+                  child: Center(child: DotIndicator(size: 3, activeIndex: activeIndex,color: Colors.black54,))),
             ],
           ),
           Expanded(child: SizedBox()),
@@ -98,19 +100,20 @@ class _SliderScreenState extends State<SliderScreen>{
             style: ButtonStyle(
               minimumSize: MaterialStateProperty.all(Size(width*0.8, 40)),
               shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-              backgroundColor: MaterialStateProperty.all(Color.fromRGBO(255, 118, 67, 1))
+              backgroundColor: MaterialStateProperty.all(MyColors.gold)
             ),
             onPressed: (){
               ++activeIndex;
-              print("page${activeIndex.toString()}");
+              //print("page${activeIndex.toString()}");
               setState(() {
                 if(activeIndex>2){
-                  activeIndex=0;
+                  storeUserRecord();
+                  activeIndex=2;
                 }else{
                   activeIndex = activeIndex;
                 }
               //  _controller = PageController(initialPage: activeIndex);
-                _controller.animateToPage(activeIndex, duration: Duration(microseconds: 500), curve: Curves.ease);
+                _controller.animateToPage(activeIndex, duration: Duration(microseconds: 100), curve: Curves.ease);
               //  _controller.nextPage(duration: Duration(seconds: 1), curve: Curves.ease);
                 //_controller
                 //_controller.animateToPage(page, duration: duration, curve: curve)
@@ -122,6 +125,12 @@ class _SliderScreenState extends State<SliderScreen>{
         ],
       ),
     );
+  }
+
+
+  void storeUserRecord() async{
+    Navigator.pushReplacementNamed(context, '/home');
+    SharedPref.addFirstTimeUser();
   }
 
 }

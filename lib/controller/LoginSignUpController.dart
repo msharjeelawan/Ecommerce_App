@@ -18,13 +18,14 @@ import '../constants.dart';
 import '../services/HomeService.dart';
 
 class LoginSignupBloc {
+  //context for navigation
+  BuildContext context;
+
   //login,validation controller
-  StreamController<bool> _loginResponseController =
-      new StreamController<bool>();
+  StreamController<bool> _loginResponseController = new StreamController<bool>();
   StreamSink _progressSink;
   Stream progressStream;
-  StreamController<List<String>> _validationResponse =
-      new StreamController<List<String>>();
+  StreamController<List<String>> _validationResponse = new StreamController<List<String>>();
   StreamSink _validateSink;
   Stream validateStream;
 
@@ -71,10 +72,7 @@ class LoginSignupBloc {
        {
          errors=[];
          _validateSink.add(errors);
-
        }
-
-
     });*/
   }
 
@@ -99,7 +97,8 @@ class LoginSignupBloc {
     if (results.statusCode == 200) {
       _progressSink.add(false);
       await SharedPref.addLoginDetail(jsonEncode(results));
-
+      //login success now go back to previous screen
+      Navigator.pop(context,true);
       print("objects" + results.toJson().toString());
     } else {
       _progressSink.add(false);
@@ -138,8 +137,7 @@ class LoginSignupBloc {
     }
   }
 
-  void completeProfile(firstName, lastName, phoneNumber, address, id,
-      postalCode, context) async {
+  void completeProfile(firstName, lastName, phoneNumber, address, id, postalCode, context) async {
     bool isroutehome = false;
     if (postalCode == "completeprofile") {
       postalCode = "";
@@ -221,7 +219,7 @@ class LoginSignupBloc {
     errors = [];
     _validateSink.add(errors);
     final results =
-        await ResetPasswordAPi.verificationPassword(email, securitycode);
+    await ResetPasswordAPi.verificationPassword(email, securitycode);
     _progressSink.add(false);
     if (results != null) {
       if (results.data.status == 200) {
@@ -252,7 +250,7 @@ class LoginSignupBloc {
     errors = [];
     _validateSink.add(errors);
     final results =
-        await ResetPasswordAPi.savePassword(email, password, securitycode);
+    await ResetPasswordAPi.savePassword(email, password, securitycode);
     _progressSink.add(false);
     if (results != null) {
       print("change password response" + results.toJson().toString());
@@ -274,14 +272,14 @@ class LoginSignupBloc {
   }
 
   Future<GoogleSignInAccount> googleLogin() async {
-      await _googleSignIn.signOut();
-      GoogleSignInAccount user = await _googleSignIn.signIn();
-      if (user == null) {
-        print("Not Login user");
-      } else {
-        print("User Email Id user" + user.email);
-        googleLoginCustomer(user.email);
-      }
+    await _googleSignIn.signOut();
+    GoogleSignInAccount user = await _googleSignIn.signIn();
+    if (user == null) {
+      print("Not Login user");
+    } else {
+      print("User Email Id user" + user.email);
+      googleLoginCustomer(user.email);
+    }
 
   }
   Future facebookLogin(BuildContext context)
@@ -365,7 +363,7 @@ class LoginSignupBloc {
     }else{
       showAlertDialog(context,plaformlogin.toString());
 
-  }
+    }
 
 
   }
@@ -456,11 +454,10 @@ class LoginSignupBloc {
     RegisterCustomer(email, password, context);
   }
 
-  String validateProfileErrors(
-      firstName, lastname, phone, address, id, postalCode, context) {
+  String validateProfileErrors(firstName, lastname, phone, address, id,postalCode, context) {
     errors = [];
     _validateSink.add(errors);
-//Email Validation
+    //Email Validation
     if (firstName.isEmpty) {
       addError(error: firstnameEnter);
       return "";
@@ -517,8 +514,7 @@ class LoginSignupBloc {
     verifySecurityCode(securitycode, email, context);
   }
 
-  String validateChangePasswordErrors(
-      email, securitycode, password, password2, context) {
+  String validateChangePasswordErrors(email, securitycode, password, password2, context) {
     errors = [];
     _validateSink.add(errors);
     if (password.isEmpty) {

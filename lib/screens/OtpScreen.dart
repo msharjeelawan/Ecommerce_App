@@ -24,23 +24,23 @@ class OtpScreen extends StatefulWidget{
 
 class _OtpScreenState extends State<OtpScreen>{
 
-FocusNode f1,f2,f3,f4;
-LoginSignupBloc loginSignupbloc = LoginSignupBloc();
-final _formKey = GlobalKey<FormState>();
-String otp1 = "";
-String otp2 = "";
-String otp3 = "";
-String otp4 = "";
+  FocusNode f1,f2,f3,f4;
+  LoginSignupBloc loginSignupbloc = LoginSignupBloc();
+  final _formKey = GlobalKey<FormState>();
+  String otp1 = "";
+  String otp2 = "";
+  String otp3 = "";
+  String otp4 = "";
 
-List<String> errors = [];
-String secondtimer = "0";
+  List<String> errors = [];
+  String secondtimer = "0";
 
 
 
-@override
-void dispose() {
-  super.dispose();
-}
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
 
   @override

@@ -21,16 +21,20 @@ class Product {
   String _discription;
   String _rating;
   String _ratingCount;
+  String _discount;
 
+  int _id;
   int _stock;
   int _price;
   int _discountPrice;
+  int _tempQty=0;
 
   List<String> _images = [];
 
   //List<Product> _productList = [];
 
-  Product({String title, int price, int discountPrice, List<String> images, int stock, String rating, String ratingCount, String discription}){
+  Product({int id,String title, int price, int discountPrice, List<String> images, int stock, String rating, String ratingCount, String discription,int qty,String discount}){
+    _id = id;
     _title = title;
     _price = price;
     _discountPrice = discountPrice;
@@ -39,6 +43,9 @@ class Product {
     _rating = rating;
     _ratingCount = ratingCount;
     _discription = discription;
+    _discount = discount;
+    if(qty!=null)
+      _tempQty = qty;
   }
 
   static List<Product> jsonToModel(List<dynamic> jsonList){
@@ -69,20 +76,31 @@ class Product {
           images.add(imgUrl);
         }
 
+        String discount="";
+        //count discount if available
+        if(price>discountPrice){
+          double off = ((price-discountPrice)*100)/price;
+          discount = off.toInt().toString();
+        }
+
        Product p = new Product(
-            title:jsonProduct["name"],
-            discription: jsonProduct["short_description"],
-            rating: jsonProduct["average_rating"],
-            ratingCount: jsonProduct["rating_count"].toString(),
-            price: price,
-            discountPrice: discountPrice,
-            stock: stock,
-            images: images);
+           id: jsonProduct["id"],
+           title:jsonProduct["name"],
+           discription: jsonProduct["short_description"],
+           rating: jsonProduct["average_rating"],
+           ratingCount: jsonProduct["rating_count"].toString(),
+           price: price,
+           discountPrice: discountPrice,
+           stock: stock,
+           discount: discount,
+           images: images);
         _productList.add(p);
       }
 
     return _productList;
   }
+
+  int get id => _id;
 
   String get title => _title;
 
@@ -97,6 +115,14 @@ class Product {
   int get discountPrice => _discountPrice;
 
   int get price => _price;
+
+  int get tempQty => _tempQty;
+
+  set tempQty(int value) {
+    _tempQty = value;
+  }
+
+  String get discount => _discount;
 
   List<String> get Images => _images;
 

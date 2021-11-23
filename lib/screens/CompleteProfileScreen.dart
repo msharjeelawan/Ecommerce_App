@@ -26,11 +26,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   String lastName = "";
   String phoneNumber = "";
   String address = "";
-  String postalCode="completeprofile";
   List<String> errors = [];
 
   @override
   Widget build(BuildContext context) {
+    print("id is ${widget.id} ");
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -205,8 +205,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                             _formKey.currentState.save();
                             // if all are valid then go to success screen
                             KeyboardUtil.hideKeyboard(context);
-                            loginSignupbloc.validateProfileErrors(
-                                firstName, lastName, phoneNumber,address,widget.id.toString(),postalCode,context);
+                            loginSignupbloc.validateProfileErrors(firstName, lastName, phoneNumber,address,widget.id.toString(),"completeprofile",context);
                           }
                         },
                         child: Text("Continue"),

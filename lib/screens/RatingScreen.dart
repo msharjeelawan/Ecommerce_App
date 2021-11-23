@@ -63,23 +63,23 @@ class _RatingScreenState extends State<RatingScreen>{
                   width: width*0.45,
                   height: width*0.45,
                   decoration: BoxDecoration(
-                      color: Color.fromRGBO(241, 241, 241, 1),
-                      borderRadius: BorderRadius.circular(100),
+                    color: Color.fromRGBO(241, 241, 241, 1),
+                    borderRadius: BorderRadius.circular(100),
                   ),
                 ),
                 Container(
                   width: width*0.4,
                   height: width*0.4,
                   decoration: BoxDecoration(
-                     // color: Colors.white,
-                      // boxShadow: <BoxShadow>[
-                      //   BoxShadow(
-                      //       color: Colors.black12,
-                      //       spreadRadius: 1,
-                      //       blurRadius: 4
-                      //   )
-                      // ],
-                       borderRadius: BorderRadius.circular(100),
+                    // color: Colors.white,
+                    // boxShadow: <BoxShadow>[
+                    //   BoxShadow(
+                    //       color: Colors.black12,
+                    //       spreadRadius: 1,
+                    //       blurRadius: 4
+                    //   )
+                    // ],
+                      borderRadius: BorderRadius.circular(100),
                       image: DecorationImage(
                           image: Image.asset("assets/images/shampoo_argan.png",).image,
                           fit: BoxFit.fill
@@ -96,7 +96,7 @@ class _RatingScreenState extends State<RatingScreen>{
                   elevation: 0,
                   color: Color.fromRGBO(241, 241, 241, 1),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)
+                      borderRadius: BorderRadius.circular(10)
                   ),
                   child: SizedBox(width:width*0.15,height:40,child: Icon(Icons.star_rate,color: Colors.yellow,)),
                 ),
@@ -138,15 +138,15 @@ class _RatingScreenState extends State<RatingScreen>{
               padding: EdgeInsets.symmetric(vertical: 30,horizontal: 20),
               child: TextField(
                 //textAlignVertical: TextAlignVertical.top,
-               // keyboardType: TextInputType.text,
+                // keyboardType: TextInputType.text,
                 decoration: InputDecoration(
-                  alignLabelWithHint: true,
-                  contentPadding: EdgeInsets.all(20),
-                  labelText: "Comment",
-                  hintText: Text("Add your comment",textAlign: TextAlign.start,).data,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15)
-                  )
+                    alignLabelWithHint: true,
+                    contentPadding: EdgeInsets.all(20),
+                    labelText: "Comment",
+                    hintText: Text("Add your comment",textAlign: TextAlign.start,).data,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15)
+                    )
                 ),
                 maxLines: 5,
               ),
@@ -165,7 +165,7 @@ class _RatingScreenState extends State<RatingScreen>{
                     fixedSize: MaterialStateProperty.all(
                         Size(width*0.88,50)
                     ),
-                   // backgroundColor: MaterialStateProperty.all(Colors.deepOrange),
+                    // backgroundColor: MaterialStateProperty.all(Colors.deepOrange),
                     shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)

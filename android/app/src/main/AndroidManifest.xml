@@ -1,16 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
-    package="com.teqholic.saraakuch">
+    package="com.teqholic.saraa_kuch">
     <uses-permission android:name="android.permission.INTERNET"/>
-
-    <application
-        android:label="saraakuch"
-
-
-   
-
+   <application
+        android:label="saraa_kuch"
         android:icon="@mipmap/ic_launcher">
-
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -45,6 +38,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
        <!-- Facebook Login configuration -->
        <meta-data android:name="com.facebook.sdk.ApplicationId"
            android:value="@string/facebook_app_id"/>

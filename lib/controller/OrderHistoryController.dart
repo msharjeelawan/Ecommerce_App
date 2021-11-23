@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:saraa_kuch/SharedPref/SharedPrefren.dart';
+import 'package:saraa_kuch/models/CheckoutScreen/User.dart';
 import 'package:saraa_kuch/models/Customer.dart';
 import 'package:saraa_kuch/models/EventActionEnum.dart';
 import 'package:saraa_kuch/models/OrderHistoryCustomer.dart';
@@ -17,6 +18,10 @@ import '../constants.dart';
 import '../services/HomeService.dart';
 
 class OrderHistoryBloc {
+  StreamController<bool> _progressbarController =
+  new StreamController<bool>();
+  StreamSink _progressSink;
+  Stream progressStream;
   //login,validation controller
   StreamController<List<Order>> _orderHistoryController =
   new StreamController<List<Order>>();
@@ -24,28 +29,35 @@ class OrderHistoryBloc {
   Stream orderlistStream;
   List<Order> orderHistorylist=[];
   OrderHistoryBloc() {
+//progress bar
+    _progressSink = _progressbarController.sink;
+    progressStream = _progressbarController.stream;
 
     //login  stream & sink
     _orderlistSink = _orderHistoryController.sink;
     orderlistStream = _orderHistoryController.stream;
+    _progressSink.add(false);
     getorderList();
 
 
   }
 
   void getorderList() async {
+    _progressSink.add(true);
+
     orderHistorylist=[];
     _orderlistSink.add(orderHistorylist);
 
-    final results = await OrderApi.getCustomerOrderHistory("24");
+    final results = await OrderApi.getCustomerOrderHistory(User().id);
     // _controller.sink.add(results);
+    _progressSink.add(false);
 
-     _orderlistSink.add(results);
-        results.forEach((element) {
-          print("\n \n results[1].id " + element.id.toString());
+    _orderlistSink.add(results);
+    results.forEach((element) {
+      print("\n \n results[1].id " + element.id.toString());
 
 
-        });
+    });
 
 
 
@@ -54,4 +66,3 @@ class OrderHistoryBloc {
   }
 
 }
-

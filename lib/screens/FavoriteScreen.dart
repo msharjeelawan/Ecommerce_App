@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:saraa_kuch/helper/DataManager.dart';
+import 'package:saraa_kuch/models/ProductScreen/ProductArgument.dart';
 import 'package:saraa_kuch/screens/ProfileScreen.dart';
 
 class FavoriteScreen extends StatefulWidget{
+
 
   @override
   _FavoriteScreenState createState(){
@@ -17,8 +20,17 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
   @override
   Widget build(BuildContext context){
+    FavoriteArgument fa = ModalRoute.of(context).settings.arguments as FavoriteArgument;
+    bool isFullScreen = false;
+    if(fa!=null){
+      //call from home screen
+      isFullScreen = fa.isFullScreen;
+    }
+
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    List<int> keys = DataManager.favorite.keys.toList();
+    int key;
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -33,7 +45,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                 children: [
                   Container(
                     width: width*0.2,
-                    child: IconButton(
+                    child: isFullScreen?IconButton(
                       icon: Icon(
                         Icons.arrow_back_ios,
                         size: 17,
@@ -42,7 +54,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                       onPressed: (){
                         Navigator.pop(context);
                       },
-                    ),
+                    ):SizedBox(),
                   ),
                   Container(
                     width: width*0.6,
@@ -50,7 +62,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                       //   crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text("Favorites",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-                        Text("4 items")
+                        Text("${DataManager.favorite.length} items")
                       ],
                     ),
                   ),
@@ -58,7 +70,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
               ),
               GridView.builder(
                 padding: EdgeInsets.all(15),
-                itemCount: 20,
+                itemCount: DataManager.favorite.length,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -67,6 +79,13 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                   childAspectRatio: 0.6
                 ),
                 itemBuilder: (context,index){
+                  int price = DataManager.favorite[keys[index]].price;
+                  int discountPrice = DataManager.favorite[keys[index]].discountPrice;
+                  key = keys[index];
+                  if(price>discountPrice && discountPrice>0){
+                    //discount available
+                    price = DataManager.favorite[keys[index]].discountPrice;
+                  }
                   var height = 0.0;
                   var h1 = 0.0;
                   var temp =0.0;
@@ -87,7 +106,7 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                        children: [
                          Container(
                            width: width*0.42,
-                           height: 130,
+                           height: 120,
                            decoration: BoxDecoration(
                                borderRadius: BorderRadius.circular(20),
                                color: Colors.white,
@@ -98,25 +117,26 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                                      blurRadius: 4)
                                ],
                                image: DecorationImage(
-                                   image: Image.asset("assets/images/shirt.jpg").image
+                                   image: Image.network(DataManager.favorite[key].Images[0]).image
                                )
                            ),
                          ),
                          SizedBox(height: 10,),
                          Padding(
                            padding: const EdgeInsets.only(left: 5.0),
-                           child: Text("Wireless Controller for ps4",),
+                           child: Text(DataManager.favorite[key].title,maxLines: 2,),
                          ),
                          Row(
                            children: [
                              SizedBox(width: 5,),
-                             Text("Rs 2000"),
+                             Text("Rs ${price}"),
                               Expanded(child: SizedBox()),
+
                               Card(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)
                                 ),
-                                child: Icon(Icons.bedtime_sharp),
+                                child: SizedBox(width:30,height: 30,child: Icon(Icons.favorite,color: Colors.red,)),
                               ),
                              SizedBox(width: 5,),
                            ],
@@ -124,13 +144,15 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
                        ],
                      ),
                      onTap: (){
-                      // print("favorite screen");
+                       Navigator.pushNamed(context, "/product",arguments: ProductArgument(id: key,type: "favorite"));
+
+
                        var route = MaterialPageRoute(
                          builder: (BuildContext context){
                            return ProfileScreen();
                          }
                        );
-                       Navigator.push(context, route);
+                      // Navigator.push(context, route);
                      },
                    ),
                  );
@@ -145,7 +167,11 @@ class _FavoriteScreenState extends State<FavoriteScreen>{
 
 }
 
+class FavoriteArgument{
+  bool isFullScreen=true;
 
+  FavoriteArgument({this.isFullScreen});
+}
 // return Container(
 // //padding: EdgeInsets.only(left: 15,top: 10),
 // width: width*0.4,

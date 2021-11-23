@@ -63,14 +63,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery
-        .of(context)
-        .size
-        .width;
-    var height = MediaQuery
-        .of(context)
-        .size
-        .height;
+    var width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -78,112 +72,100 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
       body: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          toolbarHeight: 0.0,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.white,
+            statusBarIconBrightness: Brightness.dark
+          ),
+        ),
         body: SingleChildScrollView(
           child: SafeArea(
               child: Column(
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Row(
-                        children: [
-                          Container(
-                            width: width * 0.2,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                size: 17,
-                                color: Color.fromRGBO(25, 25, 25, 1),
-                              ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ),
-                          Container(
-                            width: width * 0.6,
-                            child: Column(
-                              //   crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "User Profile",
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
+                      TextButton(onPressed: (){
+                        Navigator.pop(context);
+                      }, child: Icon(Icons.arrow_back_ios,color:Colors.black)),
+                      Expanded(child: SizedBox(width: 1,),),
+                      Text(
+                        "User Profile",
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
                       ),
+                      Expanded(child: SizedBox(width: 1,),),
+                      Expanded(child: SizedBox(width: 1,),),
+                      Expanded(child: SizedBox(width: 1,),),
                     ],
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  GestureDetector(
-                    child: Stack(
-                      children: [
-                        Container(
-                            width: width * 0.35,
-                            height: width * 0.35,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              image: new DecorationImage(
-                                  image: image==null? Image.asset("assets/images/profileImage.png",).image:
-                                  new FileImage(image),
-                                  fit: BoxFit.fill
-                              ),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                    color: Colors.black12,
-                                    spreadRadius: 1,
-                                    blurRadius: 4)
-                              ],
-                              borderRadius: BorderRadius.circular(100),
-                            ),
-
-                       /*     child: image != null
-                                ? Image.file(
-                              image,
-                                fit: BoxFit.fill,
-
-                            )
-                                : Container(
-
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: Colors.grey[800],
-                              ),
-                            ),*/
-                        ),
-                        Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Color.fromRGBO(241, 241, 241, 1),
-                                borderRadius: BorderRadius.circular(20),
-                                // boxShadow: [
-                                //   BoxShadow(
-                                //     color: Colors.black12,
-                                //     spreadRadius: 1,
-                                //     blurRadius: 8,
-                                //   )
-                                // ]
-                              ),
-                              child: SizedBox(
-                                child: Icon(Icons.photo_camera_sharp,
-                                    color: Color.fromRGBO(136, 136, 137, 1)),
-                                width: 40,
-                                height: 40,
-                              ),
-                            ))
-                      ],
-                    ),
-                    onTap: () {
-                      _showPicker(context);
-                    },
-                  ),
+                  // GestureDetector(
+                  //   child: Stack(
+                  //     children: [
+                  //       Container(
+                  //         width: width * 0.35,
+                  //         height: width * 0.35,
+                  //         decoration: BoxDecoration(
+                  //           color: Colors.white,
+                  //           image: new DecorationImage(
+                  //               image: image==null? Image.asset("assets/images/profileImage.png",).image:
+                  //               new FileImage(image),
+                  //               fit: BoxFit.fill
+                  //           ),
+                  //           boxShadow: <BoxShadow>[
+                  //             BoxShadow(
+                  //                 color: Colors.black12,
+                  //                 spreadRadius: 1,
+                  //                 blurRadius: 4)
+                  //           ],
+                  //           borderRadius: BorderRadius.circular(100),
+                  //         ),
+                  //
+                  //         /*     child: image != null
+                  //               ? Image.file(
+                  //             image,
+                  //               fit: BoxFit.fill,
+                  //           )
+                  //               : Container(
+                  //             child: Icon(
+                  //               Icons.camera_alt,
+                  //               color: Colors.grey[800],
+                  //             ),
+                  //           ),*/
+                  //       ),
+                  //       Positioned(
+                  //           bottom: 0,
+                  //           right: 0,
+                  //           child: Container(
+                  //             decoration: BoxDecoration(
+                  //               color: Color.fromRGBO(241, 241, 241, 1),
+                  //               borderRadius: BorderRadius.circular(20),
+                  //               // boxShadow: [
+                  //               //   BoxShadow(
+                  //               //     color: Colors.black12,
+                  //               //     spreadRadius: 1,
+                  //               //     blurRadius: 8,
+                  //               //   )
+                  //               // ]
+                  //             ),
+                  //             child: SizedBox(
+                  //               child: Icon(Icons.photo_camera_sharp,
+                  //                   color: Color.fromRGBO(136, 136, 137, 1)),
+                  //               width: 40,
+                  //               height: 40,
+                  //             ),
+                  //           ))
+                  //     ],
+                  //   ),
+                  //   onTap: () {
+                  //     _showPicker(context);
+                  //   },
+                  // ),
                   // SizedBox(height: 30,),
                   Form(
                     key: _formKey,

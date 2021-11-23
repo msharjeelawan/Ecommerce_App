@@ -4,7 +4,8 @@ import 'package:saraa_kuch/screens/HomeScreen.dart';
 class DotIndicator extends StatefulWidget {
   final int size;
   final int activeIndex;
-  const DotIndicator({Key key,@required int this.size,@required int this.activeIndex}) : super(key: key);
+  final Color color;
+  const DotIndicator({Key key,@required int this.size,@required int this.activeIndex,@required this.color}) : super(key: key);
 
   @override
   _DotIndicatorState createState() => _DotIndicatorState();
@@ -36,7 +37,7 @@ class _DotIndicatorState extends State<DotIndicator> {
             width: 10,
             height: 10,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: widget.color,
                 borderRadius: BorderRadius.circular(10)
             ),
           );

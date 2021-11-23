@@ -124,7 +124,7 @@ class _ConfirmPasswordState extends State<ConfirmPassword>{
 */
 
                         }
-                       /* var route = MaterialPageRoute(
+                        /* var route = MaterialPageRoute(
                             builder: (context){
                               return RegisterScreen();
                             }

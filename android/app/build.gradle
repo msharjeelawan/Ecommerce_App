@@ -29,11 +29,12 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.teqholic.saraakuch"
+        applicationId "com.teqholic.saraa_kuch"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -51,12 +52,4 @@ dependencies{
 
 flutter {
     source '../..'
-}
-dependencies {
-    implementation 'com.android.support:multidex:2.0.1' //enter the latest multidex version
-}
-android {
-    defaultConfig {
-        multiDexEnabled true
-    }
 }
