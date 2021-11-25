@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:saraa_kuch/models/CheckoutScreen/User.dart';
 import 'package:saraa_kuch/models/Customer.dart';
 import 'package:saraa_kuch/models/login_response.dart';
 
@@ -25,9 +26,16 @@ class LoginSignupScreen {
         });
 
 
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      return LoginResponse.fromJson(jsonDecode(response.body));
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+
+    LoginResponse loginResponse = LoginResponse.fromJson(jsonDecode(response.body));
+    User _user = User.instance;
+    _user.isLogin = true;
+    _user.email = loginResponse.data.email;
+    _user.fname = loginResponse.data.firstName;
+    _user.lname = loginResponse.data.lastName;
+    return loginResponse;
 
   }
 // Social Media Login
@@ -49,7 +57,13 @@ class LoginSignupScreen {
 
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    return LoginResponse.fromJson(jsonDecode(response.body));
+    LoginResponse loginResponse = LoginResponse.fromJson(jsonDecode(response.body));
+    User _user = User.instance;
+    _user.isLogin = true;
+    _user.email = loginResponse.data.email;
+    _user.fname = loginResponse.data.firstName;
+    _user.lname = loginResponse.data.lastName;
+    return loginResponse;
 
   }
   static Future<Customer> RegisterCustomer(String email, String password) async {
@@ -171,4 +185,3 @@ class LoginSignupScreen {
   }
 
 }
-

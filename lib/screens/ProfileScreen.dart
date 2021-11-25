@@ -104,19 +104,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     width: width * 0.5,
                     height: width * 0.5,
                     decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(
-                              color: Colors.black12,
-                              spreadRadius: 1,
-                              blurRadius: 4)
-                        ],
-                        borderRadius: BorderRadius.circular(100),
-                        image: new DecorationImage(
-                            image: image==null? Image.asset("assets/images/profileImage.png",).image:
-                            new FileImage(image),
-                            fit: BoxFit.fill
-                        ),
+                      color: Colors.white,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                            color: Colors.black12,
+                            spreadRadius: 1,
+                            blurRadius: 4)
+                      ],
+                      borderRadius: BorderRadius.circular(100),
+                      image: new DecorationImage(
+                          image: image==null? Image.asset("assets/images/profileImage.png",).image:
+                          new FileImage(image),
+                          fit: BoxFit.fill
+                      ),
                     ),
                   ),
                   onTap: (){
@@ -170,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       //print(ad);
                       if (index == 0) {
                         final route =
-                            MaterialPageRoute(builder: (BuildContext context) {
+                        MaterialPageRoute(builder: (BuildContext context) {
                           return UserProfileScreen();
                         });
                         Navigator.push(context, route);
@@ -239,6 +239,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
     print('Doing Something...'); // Print to console.
   }
+
+
   void _showPicker(context) {
     showModalBottomSheet(
         context: context,

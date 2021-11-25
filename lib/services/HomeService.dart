@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import 'package:saraa_kuch/models/Banner.dart';
+import 'package:saraa_kuch/models/HomeScreen/Banner.dart';
+import 'package:saraa_kuch/models/HomeScreen/Category.dart';
 
-import '../models/Product.dart';
+import '../models/HomeScreen/Product.dart';
 import 'package:http/http.dart' as http ;
 
 class HomeService{
@@ -27,7 +28,7 @@ class HomeService{
     return  [];
   }
 
-  Future<List<Banner>> getCategories() async {
+  Future<List<Category>> getCategories() async {
 
     String url = "${_domain}products/categories?consumer_key=$_ck&consumer_secret=$_cS";
 
@@ -35,7 +36,7 @@ class HomeService{
 
     if(response.statusCode == 200){
 
-     return  Banner.jsonToModel(jsonDecode(response.body));
+     return  Category.jsonToModel(jsonDecode(response.body));
     }
 
     return  [];
@@ -53,9 +54,13 @@ class HomeService{
     }
   }
 
-  Future<List<Product>> getAllProducts() async {
+  Future<List<Product>> getAllProducts({int pageIndex}) async {
 
     String url = "${_domain}products?page=1&consumer_key=$_ck&consumer_secret=$_cS";
+
+    if(pageIndex>0)
+      url = "${_domain}products?page=$pageIndex&consumer_key=$_ck&consumer_secret=$_cS";
+
     //call http and get response in json
     final response = await http.get(Uri.parse(url));
     if(response.statusCode == 200){

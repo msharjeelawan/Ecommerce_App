@@ -73,7 +73,7 @@ const MaterialColor kPrimaryColor = const MaterialColor(
 );
 
 
- const Color gold = const Color.fromRGBO(224, 153, 0, 1);
+const Color gold = const Color.fromRGBO(224, 153, 0, 1);
 
 const defaultDuration = Duration(milliseconds: 250);
 // haider supper mart app
@@ -92,7 +92,7 @@ final subheadingStyle = TextStyle(
 
 
 final RegExp emailValidatorRegExp =
-    RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+RegExp(r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 const   String splitvalue="£!/£{=!=£}/!";
 const String kEmailNullError = "Please Enter your email";
 const String kInvalidEmailError = "Please Enter Valid Email";
@@ -141,10 +141,10 @@ const validateattempt="The reset code provided is not valid. You have 2 attempts
 const facebookLogin="Facebook login has been failed. please try again or use other login method";
 const facebookLoginemail="Facebook's email is not public. please set public email or use other login method";
 const plaformlogin="for Login, Please Select android or Facebook platform";
-
+const String emptycouponcode="Please enter valid coupon code";
 const BHBtnSend = 'Send';
-
-
+const String expredCoupon="Coupon Code has been expired. please use another coupon code";
+const String newUser="newUser";
 
 //Fonts string
 const fontMedium = 'Medium';

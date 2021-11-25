@@ -17,7 +17,7 @@ class OrderApi {
     };
     var response = await client.get(
       Uri.parse(weburl +
-          "/wp-json/wc/v3/orders?customers=$customerId&consumer_key=$consumerKey&consumer_secret=$secreteKey"),
+          "/wp-json/wc/v3/orders?customer=$customerId&consumer_key=$consumerKey&consumer_secret=$secreteKey"),
       headers: requestheader,
 
     );

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:saraa_kuch/controller/OrderHistoryController.dart';
 import 'package:saraa_kuch/models/OrderHistoryCustomer.dart';
 
 
-import 'package:saraa_kuch/models/Product.dart';
+import 'package:saraa_kuch/models/HomeScreen/Product.dart';
 import 'package:saraa_kuch/screens/OrderHistoryDetail.dart';
 import 'package:saraa_kuch/services/OrderHistoryService.dart';
 
@@ -29,10 +30,16 @@ class _OrderHistoryState extends State<OrderHistory> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      backgroundColor: Colors.white,
           body: CustomScrollView(
             shrinkWrap: true,
             slivers: <Widget>[
               SliverAppBar(
+                systemOverlayStyle: SystemUiOverlayStyle(
+                  statusBarColor: Colors.white,
+                    statusBarIconBrightness: Brightness.dark,
+                  //  statusBarBrightness: Brightness.dark
+                ),
                 pinned: true,
                 stretch: true,
                 onStretchTrigger: () async {
@@ -369,15 +376,36 @@ class _OrderHistoryState extends State<OrderHistory> {
                       ),
                     );
                   } else {
+                    print("loader");
+                    return  SliverFillRemaining(hasScrollBody:false,fillOverscroll:true,child:Text("jejwkj"));
                     return SliverFillRemaining(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                      child: SizedBox(width: 10,height: 10,child: Text("jejwkj"),),
+                      //child:CircularProgressIndicator(color: Colors.black54,backgroundColor: Colors.red,)
                     );
                   }
                 },
               ),
 
+              //progress builder
+              StreamBuilder(
+                  stream: orderHistoryBloc.progressStream,
+                  initialData: false,
+                  builder: (context, snapshot) {
+                    return snapshot.data == true
+                        ? SliverFillRemaining(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
+                        :  SliverFillRemaining(
+                      child: Center(
+                        child: Container(
+                          width: 0,
+                          height: 0,
+                        ),
+                      ),
+                    );
+                  }),
             ],
           ),
         );

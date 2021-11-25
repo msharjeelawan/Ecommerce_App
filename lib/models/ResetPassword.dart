@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final resetPassword = resetPasswordFromJson(jsonString);
-
 import 'dart:convert';
 
 ResetPassword resetPasswordFromJson(String str) => ResetPassword.fromJson(json.decode(str));

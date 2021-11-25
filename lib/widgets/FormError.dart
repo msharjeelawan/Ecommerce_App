@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:saraa_kuch/controller/LoginSignUpController.dart';
 import 'package:saraa_kuch/models/EventActionEnum.dart';
 
-import '../config.dart';
+
 import '../constants.dart';
 
 
@@ -29,10 +29,8 @@ class FormError extends StatelessWidget {
         SizedBox(
           width: 10,
         ),
-        Flexible(
-          child: Text(error,
-              style: TextStyle(color: gold)),
-        ),
+        Text(error,
+            style: TextStyle(color: gold)),
       ],
     );
   }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:saraa_kuch/controller/OrderHistoryController.dart';
 import 'package:saraa_kuch/models/OrderHistoryCustomer.dart';
 
-import 'package:saraa_kuch/models/Product.dart';
+import 'package:saraa_kuch/models/HomeScreen/Product.dart';
 import 'package:saraa_kuch/services/OrderHistoryService.dart';
 
 import '../constants.dart';
@@ -47,6 +48,11 @@ class _OrderHistoryDetailState extends State<OrderHistoryDetail> {
         shrinkWrap: true,
         slivers: <Widget>[
           SliverAppBar(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Colors.white,
+              statusBarIconBrightness: Brightness.dark,
+              //  statusBarBrightness: Brightness.dark
+            ),
             pinned: true,
             stretch: true,
             onStretchTrigger: () async {

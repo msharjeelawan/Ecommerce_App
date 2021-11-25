@@ -1,9 +1,20 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:saraa_kuch/SharedPref/SharedPrefren.dart';
+import 'package:saraa_kuch/controller/CheckOutController.dart';
+import 'package:saraa_kuch/helper/DataManager.dart';
+import 'package:saraa_kuch/models/Coupon.dart';
+import 'package:saraa_kuch/models/CouponCode.dart';
 import 'package:saraa_kuch/screens/FavoriteScreen.dart';
+import 'package:saraa_kuch/screens/HomeScreen.dart';
+
+import 'CouponCode.dart';
 
 class CheckOutScreen extends StatefulWidget {
-
+  static String address="";
   _CheckOutScreenState createState(){
     return _CheckOutScreenState();
   }
@@ -12,11 +23,21 @@ class CheckOutScreen extends StatefulWidget {
 
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
+
+
+  @override
+  void initState(){
+    super.initState();
+    CheckOutController.cartPriceController = new StreamController<double>();
+
+  }
+
+
   @override
   Widget build(BuildContext context){
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
-
+    Coupon _coupon= Coupon.instance();
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
@@ -57,7 +78,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             //   crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text("CheckOut",style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-                              Text("4 items")
+                              Text("${DataManager.cart.length} items")
                             ],
                           ),
                         ),
@@ -73,7 +94,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         Expanded(child: SizedBox(),),
                         Align(
                           alignment: Alignment.centerRight,
-                          child: TextButton(onPressed: (){}, child: Text("View All",style: TextStyle(color: Color.fromRGBO(187, 189, 195, 1)),)),
+                          child: TextButton(onPressed: (){
+                            Navigator.pop(context);
+                          }, child: Text("View All",style: TextStyle(color: Color.fromRGBO(187, 189, 195, 1)),)),
                         ),
                         SizedBox(width: 15,)
                       ],
@@ -82,36 +105,40 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       width: width,
                       height: 100,
                       child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                         // physics: NeverScrollableScrollPhysics(),
-                         // shrinkWrap: true,
-                          itemCount:10,
+                          scrollDirection: Axis.horizontal,
+                          itemCount:DataManager.cart.length+1,
                           itemBuilder: (context,index){
-                            return Container(
-                              padding: EdgeInsets.only(left: 15,top: 10),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: width*0.3,
-                                    height: 80,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color: Colors.black12,
-                                              spreadRadius: 0,
-                                              blurRadius: 4
+                            List<int> keys = DataManager.cart.keys.toList();
+                            if(index<DataManager.cart.length) {
+                              return Container(
+                                padding: EdgeInsets.only(left: 15,top: 10),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: width*0.3,
+                                      height: 80,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(20),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.black12,
+                                                spreadRadius: 0,
+                                                blurRadius: 4
+                                            )
+                                          ],
+                                          image: DecorationImage(
+                                              image: Image.network(DataManager.cart[keys[index]].Images[0]).image
                                           )
-                                        ],
-                                        image: DecorationImage(
-                                            image: Image.asset("assets/images/shirt.jpg").image
-                                        )
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
+                                  ],
+                                ),
+                              );
+                            }else{
+                              return SizedBox(width: 10,);
+                            }
+
                           }
                       ),
                     ),
@@ -125,13 +152,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         Expanded(child: SizedBox(),),
                         Align(
                           alignment: Alignment.centerRight,
-                          child: TextButton(onPressed: (){}, child: Text("Edit Address",style: TextStyle(color: Color.fromRGBO(187, 189, 195, 1)),)),
+                          child: TextButton(onPressed: (){
+                            Navigator.pushNamed(context, "/profile");
+
+                          }, child: Text("Edit Address",style: TextStyle(color: Color.fromRGBO(187, 189, 195, 1)),)),
                         ),
                         SizedBox(width: 15,)
                       ],
                     ),
                     Container(
-                      child: Text("citi housing jhelum, Punjab, pakistan 49000",overflow: TextOverflow.ellipsis,maxLines: 3,),
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      width: width,
+                      child: Text("${CheckOutScreen.address}",overflow: TextOverflow.ellipsis,maxLines: 3,),
                     ),
                     Row(
                       children: [
@@ -143,9 +175,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         Expanded(child: SizedBox(),),
                         Align(
                           alignment: Alignment.centerRight,
-                          child: TextButton(onPressed: (){}, child: Text("View All",style: TextStyle(color: Color.fromRGBO(187, 189, 195, 1)),)),
+                          child: TextButton(onPressed: (){}, child: Text("",style: TextStyle(color: Color.fromRGBO(187, 189, 195, 1)),)),
                         ),
                         SizedBox(width: 15,)
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: 20,),
+                        Text("Cash on Delivery"),
                       ],
                     ),
                   ],
@@ -153,9 +191,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ),
               Positioned(
                 width: width,
-                height: height*0.2,
+                height: height*0.24,
                 bottom: 0,
                 child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 3),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       boxShadow: [
@@ -174,13 +213,79 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SizedBox(height: 5,),
-                          Card(
-                            color: Color.fromRGBO(241, 241, 241, 1.0),
-                            child: SizedBox(width:30,height:30,child: Icon(Icons.content_paste_sharp)),
-                          ),
+                          SizedBox(width:30,height:30,child: _coupon.isCouponImplemented?  IconButton(onPressed: (){
+                            _coupon.isCouponImplemented=false;
+                            _coupon.name="";
+                            _coupon.discount=0;
+                            _coupon.type="";
+                            _coupon.isPercentage=false;
+                            DataManager.discount=0;
+                            setState(() {
+
+                            });
+                          }, icon: Icon(Icons.highlight_remove)): Icon(Icons.content_paste_sharp)),
                           SizedBox(height: 5,),
-                          Text("Total:"),
-                          Text("RS1500",style: TextStyle(fontWeight: FontWeight.bold),),
+                          Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("SubTotal:",style: TextStyle(fontSize: 12),),
+                                  SizedBox(width: 1,),
+                                  Text("Shipping:",style: TextStyle(fontSize: 12),),
+                                  SizedBox(width: 1,),
+                                  _coupon.isCouponImplemented?Text("Coupon:",style: TextStyle(fontSize: 12),):SizedBox(),
+                                  SizedBox(width: 1,),
+                                  Text("Total:",style: TextStyle(fontSize: 12),),
+                                  SizedBox(width: 1,),
+                                  ],),
+                              Column(
+                                children: [
+                                  Text(DataManager.tempTotalPrice.toString(),style: TextStyle(fontSize: 12),),
+                                  SizedBox(width: 1,),
+                                  Text(DataManager.totalPrice>5000?"0":"Rs 199",style: TextStyle(fontSize: 12),),
+                                  SizedBox(width: 1,),
+                                  _coupon.isCouponImplemented?Text("-"+_coupon.discount.toString(),style: TextStyle(fontSize: 12),):SizedBox(),
+                                  SizedBox(width: 1,),
+                                  StreamBuilder<double>(
+                                      initialData: DataManager.totalPrice,
+                                      stream: CheckOutController.cartPriceController.stream,
+                                      builder: (context, snapshot) {
+                                        return Text("Rs ${snapshot.data}",style: TextStyle(fontWeight: FontWeight.bold),);
+                                      }
+                                  ),
+                                  SizedBox(width: 1,),
+                                  ],)
+                              ],
+                          ),
+
+
+                          // Row(children: [
+                          //   Text("subTotal:",style: TextStyle(fontSize: 12),),
+                          //   SizedBox(width: 1,),
+                          //   Text(DataManager.tempTotalPrice.toString(),style: TextStyle(fontSize: 12),),
+                          // ],),
+                          // Row(children: [
+                          //   Text("Shipping:",style: TextStyle(fontSize: 12),),
+                          //   SizedBox(width: 1,),
+                          //   Text(DataManager.totalPrice>5000?"0":"Rs 199",style: TextStyle(fontSize: 12),),
+                          // ],),
+                          // _coupon.isCouponImplemented?Row(children: [
+                          //   Text("coupon",style: TextStyle(fontSize: 12),),
+                          //   SizedBox(width: 1,),
+                          //   Text("-"+_coupon.discount.toString(),style: TextStyle(fontSize: 12),),
+                          // ],):SizedBox(),
+                          // Row(children: [
+                          //   Text("Total:",style: TextStyle(fontSize: 12),),
+                          //   SizedBox(width: 1,),
+                          //   StreamBuilder<double>(
+                          //       initialData: DataManager.totalPrice,
+                          //       stream: CheckOutController.cartPriceController.stream,
+                          //       builder: (context, snapshot) {
+                          //         return Text("Rs ${snapshot.data}",style: TextStyle(fontWeight: FontWeight.bold),);
+                          //       }
+                          //   ),
+                          // ],),
                           SizedBox(height: 5,),
                         ],
                       ),
@@ -190,18 +295,42 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           SizedBox(height: 5,),
-                          TextButton(child: Text("Add voucher code    >"),),
+                          TextButton(child: Text(_coupon.isCouponImplemented? _coupon.name:"Add voucher code    >",style: TextStyle(color: Colors.black54),),onPressed: () async{
+
+                            if(!_coupon.isCouponImplemented) {
+                                final result = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => couponCodeScreen(),
+                                    ));
+
+                                if (result != null) {
+                                  setState(() {
+
+                                  });
+                                  CouponCode couponCodeCode = CouponCode.fromJson(
+                                      result);
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Coupon Applied"),));
+
+
+                                  print("couponCodeCode id" +
+                                      couponCodeCode.id.toString() +
+                                      " code " + couponCodeCode.code.toString());
+                                }
+                            }else{
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Coupon already applied please remove it"),));
+                            }
+
+                          },),
+                          SizedBox(height: 5,),
                           ElevatedButton(
                             onPressed: (){
-                              var route = MaterialPageRoute(
-                                  builder: (BuildContext context){
-                                    return FavoriteScreen();
-                                  }
-                              );
-                              Navigator.push(context, route);
+                              //create order process will start after pushing this button
+                              CheckOutController.createOrder(context);
                             },
-                            child: Text("Pay Now"),
+                            child: Text("Place Order"),
                             style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(MyColors.gold),
                                 fixedSize: MaterialStateProperty.all(Size(170,40)),
                                 shape: MaterialStateProperty.all(RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)

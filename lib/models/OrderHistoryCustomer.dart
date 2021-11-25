@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final order = orderFromJson(jsonString);
-
 import 'dart:convert';
 
 List<Order> orderFromJson(String str) => List<Order>.from(json.decode(str).map((x) => Order.fromJson(x)));
@@ -52,11 +48,11 @@ class Order {
     this.dateCompletedGmt,
     this.datePaidGmt,
     this.currencySymbol,
-   // this.links,
+    // this.links,
   });
 
   int id;
-   int parentId;
+  int parentId;
   String status;
   String currency;
   String version;
@@ -97,7 +93,7 @@ class Order {
   dynamic dateCompletedGmt;
   dynamic datePaidGmt;
   String currencySymbol;
- // Links links;
+  // Links links;
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     id: json["id"],
@@ -130,7 +126,7 @@ class Order {
     datePaid: json["date_paid"],
     cartHash: json["cart_hash"],
     number: json["number"],
-   // metaData: List<OrderMetaDatum>.from(json["meta_data"].map((x) => OrderMetaDatum.fromJson(x))),
+    // metaData: List<OrderMetaDatum>.from(json["meta_data"].map((x) => OrderMetaDatum.fromJson(x))),
     lineItems: List<dynamic>.from(json["line_items"].map((x) => (x))),
     taxLines: List<dynamic>.from(json["tax_lines"].map((x) => x)),
     shippingLines: List<ShippingLine>.from(json["shipping_lines"].map((x) => ShippingLine.fromJson(x))),
@@ -142,7 +138,7 @@ class Order {
     dateCompletedGmt: json["date_completed_gmt"],
     datePaidGmt: json["date_paid_gmt"],
     currencySymbol: json["currency_symbol"],
-   // links: Links.fromJson(json["_links"]),
+    // links: Links.fromJson(json["_links"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -176,7 +172,7 @@ class Order {
     "date_paid": datePaid,
     "cart_hash": cartHash,
     "number": number,
-   // "meta_data": List<dynamic>.from(metaData.map((x) => x.toJson())),
+    // "meta_data": List<dynamic>.from(metaData.map((x) => x.toJson())),
     "line_items": List<dynamic>.from(lineItems.map((x) => x.toJson())),
     "tax_lines": List<dynamic>.from(taxLines.map((x) => x)),
     "shipping_lines": List<dynamic>.from(shippingLines.map((x) => x.toJson())),
@@ -398,8 +394,8 @@ class ShippingLine {
     this.instanceId,
     this.total,
     this.totalTax,
-   // this.taxes,
-  //  this.metaData,
+    // this.taxes,
+    //  this.metaData,
   });
 
   int id;
@@ -408,7 +404,7 @@ class ShippingLine {
   String instanceId;
   String total;
   String totalTax;
- // List<dynamic> taxes;
+  // List<dynamic> taxes;
 //  List<ShippingLineMetaDatum> metaData;
 
   factory ShippingLine.fromJson(Map<String, dynamic> json) => ShippingLine(
@@ -418,8 +414,8 @@ class ShippingLine {
     instanceId: json["instance_id"],
     total: json["total"],
     totalTax: json["total_tax"],
-   // taxes:json["taxes"]==null || json["taxes"]==[]?[]: List<dynamic>.from(json["taxes"].map((x) => x)),
-   // metaData: List<ShippingLineMetaDatum>.from(json["meta_data"].map((x) => ShippingLineMetaDatum.fromJson(x))),
+    // taxes:json["taxes"]==null || json["taxes"]==[]?[]: List<dynamic>.from(json["taxes"].map((x) => x)),
+    // metaData: List<ShippingLineMetaDatum>.from(json["meta_data"].map((x) => ShippingLineMetaDatum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -429,8 +425,8 @@ class ShippingLine {
     "instance_id": instanceId,
     "total": total,
     "total_tax": totalTax,
-   // "taxes": List<dynamic>.from(taxes.map((x) => x)),
-   // "meta_data": List<dynamic>.from(metaData.map((x) => x.toJson())),
+    // "taxes": List<dynamic>.from(taxes.map((x) => x)),
+    // "meta_data": List<dynamic>.from(metaData.map((x) => x.toJson())),
   };
 }
 
@@ -465,14 +461,14 @@ class ShippingLineMetaDatum {
   List<MetaDatum> metaData;
 
   factory ShippingLineMetaDatum.fromJson(Map<String, dynamic> json) => ShippingLineMetaDatum(
-    id: json["id"],
-    methodTitle: json["method_title"],
-    methodId: json["method_id"],
-    instanceId: json["instance_id"],
-    total: json["total"],
-    totalTax: json["total_tax"],
-    taxes: json["taxes"]==null || json["taxes"]==[]?[]:List<dynamic>.from(json["taxes"].map((x) => x)),
-    metaData: List<MetaDatum>.from(json["meta_data"].map((x) => MetaDatum.fromJson(x))),
+      id: json["id"],
+      methodTitle: json["method_title"],
+      methodId: json["method_id"],
+      instanceId: json["instance_id"],
+      total: json["total"],
+      totalTax: json["total_tax"],
+      taxes: json["taxes"]==null || json["taxes"]==[]?[]:List<dynamic>.from(json["taxes"].map((x) => x)),
+  metaData: List<MetaDatum>.from(json["meta_data"].map((x) => MetaDatum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
